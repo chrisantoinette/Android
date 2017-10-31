@@ -35,6 +35,10 @@ public class ParkingInfoActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private static final int mList = 1;
+    private static final int mFilter = 2;
+    private static final int mMap = 3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,9 +111,23 @@ public class ParkingInfoActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_parking_list, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            int position = getArguments().getInt(ARG_SECTION_NUMBER);
+            View rootView  = inflater.inflate(R.layout.fragment_parking_list, container, false);
+            System.out.println("chosen page number : "+position);
+            switch (position) {
+                case mList : {
+                    rootView = inflater.inflate(R.layout.fragment_parking_list, container, false);
+                }
+
+                case mMap: {
+                    rootView = inflater.inflate(R.layout.fragment_parking_map, container, false);
+                }
+
+                case mFilter: {
+                    rootView = inflater.inflate(R.layout.fragment_parking_filter, container, false);
+                }
+            }
+            //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
     }
@@ -140,7 +158,7 @@ public class ParkingInfoActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0:
+                case 0 :
                     return "LIST";
                 case 1:
                     return "MAP";
