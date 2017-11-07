@@ -7,7 +7,12 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality. 
     -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -27,9 +32,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.chris.ParkingInfoActivity"
+            android:name=".ParkingInfoActivity"
             android:label="@string/title_activity_parking_list"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".fragmentFilter"
+            android:label="@string/title_activity_fragment_filter" />
+        <activity
+            android:name=".fragmentList"
+            android:label="@string/title_activity_fragment_list" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -42,16 +53,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name="com.chris.fragmentMap"
-            android:label="@string/title_activity_fragment_map" />
-        <activity
-            android:name="com.chris.fragmentFilter"
-            android:label="@string/title_activity_fragment_filter"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name="com.chris.fragmentList"
-            android:label="@string/title_activity_fragment_list" />
     </application>
 
 </manifest>

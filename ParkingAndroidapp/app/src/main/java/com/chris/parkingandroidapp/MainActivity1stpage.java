@@ -2,8 +2,6 @@ package com.chris.parkingandroidapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,10 +10,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
-import com.chris.ParkingInfoActivity;
-
 public class MainActivity1stpage extends AppCompatActivity {
 
+    public class Listener  implements View.OnClickListener  {
+        @Override
+        public void onClick(View var1) {
+            Log.i("--parking new class-" , "button clicked !!!!!!!");
+            launchNextPage();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,15 +27,10 @@ public class MainActivity1stpage extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Button findParking = (Button) findViewById(R.id.findParking);
-        findParking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i("--parking button----" , "button clicked ");
-                SendMsg();
-            }
-        });
+        Listener listenButton = new Listener();
+        findParking.setOnClickListener (listenButton);
     }
-    public void SendMsg ()
+    public void launchNextPage ()
     {
         Intent intent = new Intent(this, ParkingInfoActivity.class) ;
         startActivity(intent);
