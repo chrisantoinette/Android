@@ -1,4 +1,4 @@
-package com.chris;
+package com.chris.parkingandroidapp;
 
 import android.app.Activity;
 

@@ -1,5 +1,6 @@
-package com.chris;
+package com.chris.parkingandroidapp;
 
+import android.location.Location;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,9 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.TextView;
-
-import com.chris.parkingandroidapp.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 
 public class ParkingInfoActivity extends AppCompatActivity {
 
@@ -35,10 +35,9 @@ public class ParkingInfoActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    private static final int mList = 1;
-    private static final int mFilter = 2;
-    private static final int mMap = 3;
-
+    private static final int mMap = 0;
+    private static final int mFilter = 1;
+    private static final int mList = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +56,6 @@ public class ParkingInfoActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
     }
 
 
@@ -91,6 +89,9 @@ public class ParkingInfoActivity extends AppCompatActivity {
          * The fragment argument representing the section number for this
          * fragment.
          */
+        MapView mMapView;
+        private GoogleMap mGoogleMap;
+        private Location location;
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
@@ -105,6 +106,7 @@ public class ParkingInfoActivity extends AppCompatActivity {
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
+            System.out.println("chosen page number : "+sectionNumber);
             return fragment;
         }
 
@@ -113,18 +115,15 @@ public class ParkingInfoActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             int position = getArguments().getInt(ARG_SECTION_NUMBER);
             View rootView  = inflater.inflate(R.layout.fragment_parking_list, container, false);
-            System.out.println("chosen page number : "+position);
             switch (position) {
                 case mList : {
                     rootView = inflater.inflate(R.layout.fragment_parking_list, container, false);
-                }
-
-                case mMap: {
-                    rootView = inflater.inflate(R.layout.fragment_parking_map, container, false);
+                    break;
                 }
 
                 case mFilter: {
                     rootView = inflater.inflate(R.layout.fragment_parking_filter, container, false);
+                    break;
                 }
             }
             //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
@@ -146,7 +145,12 @@ public class ParkingInfoActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            if(position != mMap) {
+                return PlaceholderFragment.newInstance(position);
+            }
+            else {
+                return new MapViewFragment();
+            }
         }
 
         @Override
@@ -158,12 +162,12 @@ public class ParkingInfoActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0 :
-                    return "LIST";
-                case 1:
+                case mMap :
                     return "MAP";
-                case 2:
+                case mFilter:
                     return "FILTER";
+                case mList:
+                    return "LIST";
             }
             return null;
         }
