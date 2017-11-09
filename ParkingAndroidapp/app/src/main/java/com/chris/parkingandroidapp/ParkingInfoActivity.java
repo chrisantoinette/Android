@@ -82,56 +82,6 @@ public class ParkingInfoActivity extends AppCompatActivity {
     }
 
     /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        MapView mMapView;
-        private GoogleMap mGoogleMap;
-        private Location location;
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            System.out.println("chosen page number : "+sectionNumber);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            int position = getArguments().getInt(ARG_SECTION_NUMBER);
-            View rootView  = inflater.inflate(R.layout.fragment_parking_list, container, false);
-            switch (position) {
-                case mList : {
-                    rootView = inflater.inflate(R.layout.fragment_parking_list, container, false);
-                    break;
-                }
-
-                case mFilter: {
-                    rootView = inflater.inflate(R.layout.fragment_parking_filter, container, false);
-                    break;
-                }
-            }
-            //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
-    /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
@@ -145,12 +95,22 @@ public class ParkingInfoActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if(position != mMap) {
-                return PlaceholderFragment.newInstance(position);
+            Fragment currentFragment = null;
+            switch (position) {
+                case mMap: {
+                    currentFragment = new fragmentMap();
+                    break;
+                }
+                case mFilter: {
+                    currentFragment = new fragmentFilter();
+                    break;
+                }
+                case mList: {
+                    currentFragment = new fragmentList();
+                    break;
+                }
             }
-            else {
-                return new MapViewFragment();
-            }
+            return currentFragment;
         }
 
         @Override

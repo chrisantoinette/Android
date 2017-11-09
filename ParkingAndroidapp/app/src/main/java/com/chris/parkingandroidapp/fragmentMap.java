@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -32,12 +33,12 @@ import static android.content.Context.LOCATION_SERVICE;
  * Created on 11/6/17.
  */
 
-public class MapViewFragment extends Fragment  implements LocationListener{
+public class fragmentMap extends Fragment  implements LocationListener{
 
     MapView mMapView;
     private Fragment mFragment;
     private GoogleMap googleMap;
-    private String TAG = MapViewFragment.class.getName();
+    private String TAG = fragmentMap.class.getName();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_fragment_parking_map, container, false);
@@ -126,8 +127,15 @@ public class MapViewFragment extends Fragment  implements LocationListener{
         if (bestLocation != null) {
             onLocationChanged(bestLocation);
         }
-        //locationManager.requestLocationUpdates(bestProvider, 2000, 0, onLocationChanged);
-        //locationManager.requestLocationUpdates(bestProvider, 2000, 0, getActivity().getApplicationContext());
+        DBhelper dbhelper = new DBhelper();
+        List<LatLng> parkingLocations = dbhelper.findParkingSpaces(bestLocation);
+        plotParkingLocations(parkingLocations);
+    }
+    private void plotParkingLocations(List<LatLng> parkingLocations) {
+        for(int i = 0; i < parkingLocations.size(); i++)
+        {
+            googleMap.addMarker(new MarkerOptions().position(parkingLocations.get(i)).title("Parking Spot: "+ i));
+        }
     }
     // Location Changed
     @Override
@@ -143,7 +151,7 @@ public class MapViewFragment extends Fragment  implements LocationListener{
             marker.remove();
         }
 
-        marker =  googleMap.addMarker(new MarkerOptions().position(loc).title("Parking Spot"));
+        //marker =  googleMap.addMarker(new MarkerOptions().position(loc).title("Parking Spot"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
 

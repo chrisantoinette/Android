@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.chris.parkingandroidapp.MainActivity1stpage"
-    tools:showIn="@layout/activity_main_activity1stpage">
+    tools:showIn="@layout/intro_activity">
 
 
     <LinearLayout
