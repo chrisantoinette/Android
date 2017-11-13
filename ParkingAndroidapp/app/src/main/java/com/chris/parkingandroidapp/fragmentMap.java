@@ -124,13 +124,13 @@ public class fragmentMap extends Fragment  implements LocationListener{
         }
         if (bestLocation != null) {
             onLocationChanged(bestLocation);
+            // Register for location changes only if location is available.
+            mLocationManager.requestLocationUpdates(bestProvider, 5000, 0,  this);
         }
-        // Register for location changes
-        mLocationManager.requestLocationUpdates(bestProvider, 5000, 0,  this);
 
         // Get this location's parking spots
         DBhelper dbhelper = new DBhelper();
-        List<LatLng> parkingLocations = dbhelper.findParkingSpaces(bestLocation);
+        List<LatLng> parkingLocations = dbhelper.getParkingLocations(bestLocation);
         plotParkingLocations(parkingLocations);
     }
     private void plotParkingLocations(List<LatLng> parkingLocations) {
@@ -155,15 +155,9 @@ public class fragmentMap extends Fragment  implements LocationListener{
         //marker =  googleMap.addMarker(new MarkerOptions().position(loc).title("Parking Spot"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
-
-        // For zooming automatically to the location of the marker
-        //CameraPosition cameraPosition = new CameraPosition.Builder().target(loc).zoom(12).build();
-        //googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
     }
     @Override
     public void onProviderDisabled(String provider) {
-
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         startActivity(intent);
         Toast.makeText(getActivity().getBaseContext(), "Gps is turned off!!",
@@ -172,7 +166,6 @@ public class fragmentMap extends Fragment  implements LocationListener{
 
     @Override
     public void onProviderEnabled(String provider) {
-
         Toast.makeText(getActivity().getBaseContext(), "Gps is turned on!! ",
                 Toast.LENGTH_SHORT).show();
     }
