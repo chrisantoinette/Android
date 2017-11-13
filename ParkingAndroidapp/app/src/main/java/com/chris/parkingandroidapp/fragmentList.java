@@ -1,6 +1,6 @@
 package com.chris.parkingandroidapp;
 
-import android.app.Activity;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,22 +13,24 @@ import android.widget.ListView;
  */
 
 public class fragmentList extends Fragment {
-    String[] nameArray = {"Octopus","Pig","Sheep","Rabbit","Snake","Spider" };
 
-    String[] infoArray = {
-            "8 tentacled monster",
-            "Delicious in rolls",
-            "Great for jumpers",
-            "Nice in a stew",
-            "Great for shoes",
-            "Scary."
-    };
     ListView mListView;
+    ParkingDataProvider mDataProvider;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_parking_list, container, false);
-        CustomListAdapter parkingDataAdapter = new CustomListAdapter(getActivity(), nameArray, infoArray);
-        mListView = (ListView) getActivity().findViewById(R.id.listviewID);
+        mDataProvider = new ParkingDataProvider(getActivity());
+
+        // College location is our current location
+        Location currentLocation = new Location("gps");
+        currentLocation.setLatitude(37.337011);
+        currentLocation.setLongitude(-121.881613);
+
+        CustomListAdapter parkingDataAdapter = new CustomListAdapter(getActivity(),
+                mDataProvider.getParkingLocationNames(currentLocation),
+                mDataProvider.getParkingAddresses(currentLocation));
+        mListView = (ListView) rootView.findViewById(R.id.listviewID);
         mListView.setAdapter(parkingDataAdapter);
         return rootView;
 

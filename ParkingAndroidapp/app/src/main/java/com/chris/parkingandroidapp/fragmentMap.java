@@ -1,13 +1,9 @@
 package com.chris.parkingandroidapp;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,14 +16,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.location.LocationListener;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -40,6 +34,7 @@ import static android.content.Context.LOCATION_SERVICE;
 public class fragmentMap extends Fragment  implements LocationListener{
 
     MapView mMapView;
+    ParkingDataProvider mDataProvider;
     private Fragment mFragment;
     private GoogleMap googleMap;
     private String TAG = fragmentMap.class.getName();
@@ -69,7 +64,7 @@ public class fragmentMap extends Fragment  implements LocationListener{
 
             }
         });
-
+        mDataProvider = new ParkingDataProvider(getActivity());
         return rootView;
     }
 
@@ -129,8 +124,8 @@ public class fragmentMap extends Fragment  implements LocationListener{
         }
 
         // Get this location's parking spots
-        DBhelper dbhelper = new DBhelper();
-        List<LatLng> parkingLocations = dbhelper.getParkingLocations(bestLocation);
+
+        List<LatLng> parkingLocations = mDataProvider.getParkingLocations(bestLocation);
         plotParkingLocations(parkingLocations);
     }
     private void plotParkingLocations(List<LatLng> parkingLocations) {
