@@ -25,6 +25,12 @@
             android:name=".MainActivity1stpage"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity
+            android:name=".RegistrationActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,9 +41,9 @@
             android:name=".ParkingInfoActivity"
             android:label="@string/title_activity_parking_list"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".fragmentFilter"
-            android:label="@string/title_activity_fragment_filter" />
+        <!--<activity-->
+            <!--android:name=".fragmentFilter"-->
+            <!--android:label="@string/title_activity_fragment_filter" />-->
         <activity
             android:name=".fragmentList"
             android:label="@string/title_activity_fragment_list" />

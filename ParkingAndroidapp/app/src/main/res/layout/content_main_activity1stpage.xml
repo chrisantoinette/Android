@@ -21,29 +21,24 @@
             android:gravity="center_vertical|center_horizontal"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Where would you like to Park?"
-                android:textAlignment="center"
-                android:textAppearance="@android:style/TextAppearance.Material.Medium"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Enter city, place or postal code "
-                android:textAlignment="center" />
-
             <Button
                 android:id="@+id/findParking"
                 android:layout_width="198dp"
                 android:layout_height="wrap_content"
-                android:text="FInd Parking" />
+                android:text="FInd my Parking" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/button3"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Button" />
         </LinearLayout>
 
         <LinearLayout
@@ -55,10 +50,10 @@
 
             <Button
                 android:id="@+id/button8"
-                android:layout_width="wrap_content"
+                android:layout_width="87dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Last Search Results" />
+                android:text="Settings" />
 
             <Button
                 android:id="@+id/button7"
