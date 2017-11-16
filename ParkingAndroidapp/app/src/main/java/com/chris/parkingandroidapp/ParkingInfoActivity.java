@@ -36,8 +36,8 @@ public class ParkingInfoActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     private static final int mMap = 0;
-    private static final int mFilter = 1;
-    private static final int mList = 2;
+    //private static final int mFilter = 1;
+    private static final int mList = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +101,6 @@ public class ParkingInfoActivity extends AppCompatActivity {
                     currentFragment = new fragmentMap();
                     break;
                 }
-                case mFilter: {
-                    currentFragment = new fragmentFilter();
-                    break;
-                }
                 case mList: {
                     currentFragment = new fragmentList();
                     break;
@@ -116,7 +112,8 @@ public class ParkingInfoActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            //return 3;
+            return 2;
         }
 
         @Override
@@ -124,8 +121,6 @@ public class ParkingInfoActivity extends AppCompatActivity {
             switch (position) {
                 case mMap :
                     return "MAP";
-                case mFilter:
-                    return "FILTER";
                 case mList:
                     return "LIST";
             }

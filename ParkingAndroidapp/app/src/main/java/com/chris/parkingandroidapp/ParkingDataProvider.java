@@ -36,7 +36,7 @@ public class ParkingDataProvider {
 
     public void constructMockParkingLocations () {
         mLocationLookup = new HashMap<String, List<ParkingData>>();
-        // Parking Spot - East
+        // Parking Spot - Eastxx
         LatLng parkingSpot = new LatLng(37.333148, -121.882753 );
         String address ="Lot 11/13 San Jose, CA 95112";
         String name = ("East Parking");
