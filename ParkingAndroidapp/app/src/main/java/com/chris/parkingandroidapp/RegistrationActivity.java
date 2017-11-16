@@ -29,7 +29,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
     private EditText editTextUsername, editTextEmail, editTextPassword;
-    private Button buttonRegister;
+    private Button buttonRegister, mButtonLogin;
     private ProgressDialog progressDialog;
 
     private TextView textViewLogin;
@@ -52,14 +52,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         editTextUsername = (EditText) findViewById(R.id.editTextUsername);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
-        textViewLogin = (TextView) findViewById(R.id.textViewLogin);
-
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
-
+        mButtonLogin = (Button) findViewById(R.id.login);
         progressDialog = new ProgressDialog(this);
 
         buttonRegister.setOnClickListener(this);
-        textViewLogin.setOnClickListener(this);
+        mButtonLogin.setOnClickListener(this);
     }
 
     private void registerUser() {
@@ -103,18 +101,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 return params;
             }
         };
-
-
         // RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-
     }
 
     @Override
     public void onClick(View view) {
-        if (view == buttonRegister)
+        if (view == buttonRegister) {
             registerUser();
+        }
+        if (view == mButtonLogin) {
+            startActivity(new Intent(this, MainActivity1stpage.class));
+        }
         //if(view == textViewLogin)
         //  startActivity(new Intent(this, LoginActivity.class));
     }

@@ -58,15 +58,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Register User" />
-    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textViewLogin"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/linearLayout"
-        android:text="Already Registered? \n Click Here to Login"
-        android:textAlignment="center"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+        <Button
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Already Registered?" />
+    </LinearLayout>
 
 </RelativeLayout>
