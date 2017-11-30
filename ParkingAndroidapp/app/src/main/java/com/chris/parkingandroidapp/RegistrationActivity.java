@@ -35,8 +35,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private TextView textViewLogin;
 
     public class Constant {
-        final static String URL_REGISTER = "http://127.0.0.1/";
+        final static String URL_BASE = "http://192.168.64.2/parking_service/";
+        final static String URL_REGISTER = URL_BASE + "registerUser.php";
+        final static String URL_DATAPR = URL_BASE + "index.php";
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

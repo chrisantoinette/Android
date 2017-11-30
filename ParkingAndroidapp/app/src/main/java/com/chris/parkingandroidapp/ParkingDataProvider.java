@@ -1,13 +1,27 @@
 package com.chris.parkingandroidapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -28,9 +42,12 @@ public class ParkingDataProvider {
     private Context mContext;
     // Lookup parking locations in this zip code.
     private HashMap<String, List<ParkingData>> mLocationLookup;
+    private ProgressDialog progressDialog;
 
     public ParkingDataProvider(Context thisContext) {
         mContext = thisContext;
+        progressDialog = new ProgressDialog(mContext);
+        getFromServer();
         constructMockParkingLocations();
     }
 
@@ -121,12 +138,86 @@ public class ParkingDataProvider {
     {
         List<String> results = new ArrayList<String>();
         if(mLocationLookup.containsKey(getZipCode(currentLocation))) {
-            List<ParkingData> result = mLocationLookup.get(getZipCode(currentLocation));
-            for(int i = 0; i < result.size(); ++i) {
-                results.add(result.get(i).getParkingName());
+            List<ParkingData> parkingDataList = mLocationLookup.get(getZipCode(currentLocation));
+            for(int i = 0; i < parkingDataList.size(); ++i) {
+                results.add(parkingDataList.get(i).getParkingName());
             }
         }
         return  results;
+    }
+
+    public double[] getParkingDistance(Location currentLocation)
+    {
+        double[] distance = null;
+        if(mLocationLookup.containsKey(getZipCode(currentLocation))) {
+            List<ParkingData> parkingDataList = mLocationLookup.get(getZipCode(currentLocation));
+            distance = new double[parkingDataList.size()];
+            // convert current location into LatLng
+            LatLng mylocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            for(int i = 0; i < parkingDataList.size(); ++i) {
+               distance[i] = CalculationByDistance( mylocation, parkingDataList.get(i).getParkingSpotLocation());
+            }
+        }
+        return distance;
+    }
+    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        //Math.floor(valueResult * 100) / 100;
+        //DecimalFormat newFormat = new DecimalFormat("#.##").format(valueResult);
+
+
+        return Math.floor(valueResult * 100) / 100;
+    }
+    private void getFromServer() {
+        progressDialog.setMessage("Finding Parking for you ...");
+        progressDialog.show();
+
+        String requestWithParam = RegistrationActivity.Constant.URL_DATAPR + "?zipcode=95112";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                requestWithParam,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            System.out.println("RESPONSE"+jsonObject.toString());
+                            //Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.hide();
+                        //Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("zipcode", "95112");
+                return params;
+            }
+        };
+        // RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(stringRequest);
     }
 }
 

@@ -36,5 +36,12 @@ public class SharedPrefManager {
         editor.putBoolean(TAG_LOGIN, true);
         editor.apply();
     }
-
+    // for testing purpose
+    public void clearLogin ()
+    {
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(TAG_LOGIN, false);
+        editor.apply();
+    }
 }

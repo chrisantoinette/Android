@@ -29,7 +29,8 @@ public class fragmentList extends Fragment {
 
         CustomListAdapter parkingDataAdapter = new CustomListAdapter(getActivity(),
                 mDataProvider.getParkingLocationNames(currentLocation),
-                mDataProvider.getParkingAddresses(currentLocation));
+                mDataProvider.getParkingAddresses(currentLocation),
+                mDataProvider.getParkingDistance(currentLocation));
         mListView = (ListView) rootView.findViewById(R.id.listviewID);
         mListView.setAdapter(parkingDataAdapter);
         return rootView;

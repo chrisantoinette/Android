@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +29,9 @@ public class CustomListAdapter extends ArrayAdapter {
 
     //to store the list of countries
     private List<String> parkingAddresses_ = new ArrayList<String>();
-
+    private final double[] parkingDistances_;
     public CustomListAdapter(Activity context, List<String> parkingNames,
-                             List<String> parkingAddresses)
+                             List<String> parkingAddresses, double[] parkingDistances)
     {
         super(context, R.layout.listview_row , parkingNames.toArray(new String[0]));
 
@@ -37,6 +39,7 @@ public class CustomListAdapter extends ArrayAdapter {
         //this.imageIDarray = imageIDArrayParam;
         this.parkingNames_ = parkingNames;
         this.parkingAddresses_ = parkingAddresses;
+        this.parkingDistances_ = parkingDistances;
     }
 
     public View getView(int position, View view, ViewGroup parent) {
@@ -47,12 +50,12 @@ public class CustomListAdapter extends ArrayAdapter {
         TextView nameTextField = (TextView) rowView.findViewById(R.id.nameTextViewID);
         TextView infoTextField = (TextView) rowView.findViewById(R.id.infoTextViewID);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.imageViewID);
-
+        TextView distanceField = (TextView) rowView.findViewById(R.id.distanceId);
         //this code sets the values of the objects to values from the arrays
         nameTextField.setText(parkingNames_.get(position));
         infoTextField.setText(parkingAddresses_.get(position));
         //imageView.setImageResource(imageIDarray[position]);
-
+        distanceField.setText(parkingDistances_[position]+"m");
         return rowView;
 
     };
