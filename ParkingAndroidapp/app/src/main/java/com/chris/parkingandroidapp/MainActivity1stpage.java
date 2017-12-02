@@ -12,6 +12,8 @@ import android.widget.Button;
 
 public class MainActivity1stpage extends AppCompatActivity {
 
+
+    Button button,button1 ;
     public class Listener  implements View.OnClickListener  {
         @Override
         public void onClick(View var1) {
@@ -24,6 +26,29 @@ public class MainActivity1stpage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.intro_activity);
+        button =(Button) findViewById(R.id.bBike);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bikeIntent = new Intent(MainActivity1stpage.this,ParkingInfoActivity.class);
+                bikeIntent.putExtra("type","Bike");
+                startActivity(bikeIntent);
+
+            }
+        });
+
+
+    button1=(Button) findViewById(R.id.bCar);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent bikeIntent = new Intent(MainActivity1stpage.this,ParkingInfoActivity.class);
+                bikeIntent.putExtra("type","Car");
+                startActivity(bikeIntent);
+
+            }
+        });
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

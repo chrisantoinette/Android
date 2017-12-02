@@ -1,23 +1,17 @@
 package com.chris.parkingandroidapp;
 
-import android.location.Location;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 
 public class ParkingInfoActivity extends AppCompatActivity {
 
@@ -38,9 +32,12 @@ public class ParkingInfoActivity extends AppCompatActivity {
     private static final int mMap = 0;
     //private static final int mFilter = 1;
     private static final int mList = 1;
-
+    private static final String TAG = "ParkingInfoActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parking_info);
 
@@ -106,6 +103,10 @@ public class ParkingInfoActivity extends AppCompatActivity {
                     break;
                 }
             }
+            Intent intent = getIntent();
+            Bundle b = intent.getExtras();
+            Log.d(TAG,(String) b.get("type"));
+            currentFragment.setArguments(b);
             return currentFragment;
         }
 
