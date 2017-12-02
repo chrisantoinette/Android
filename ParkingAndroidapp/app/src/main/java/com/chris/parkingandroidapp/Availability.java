@@ -24,10 +24,10 @@ import java.util.Map;
 public class Availability extends AppCompatActivity {
 
 
-    private TextView tLot,tAddress,tBit;
+    private TextView tLot, tAddress, tBit;
     private Context context;
     private String j = "";
-    private int count=0;
+    private int count = 0;
     private static final String TAG = "MyActivity";
 
     static ArrayList<ContactsAdapter> arrayList = new ArrayList<>();
@@ -39,10 +39,10 @@ public class Availability extends AppCompatActivity {
 
         context = getApplicationContext();
 
-       // tSetLot = (TextView) findViewById(R.id.tAddress);
+        // tSetLot = (TextView) findViewById(R.id.tAddress);
         tLot = (TextView) findViewById(R.id.tLot);
-        tAddress=(TextView) findViewById(R.id.tAddress) ;
-        tBit =(TextView) findViewById(R.id.tBit);
+        tAddress = (TextView) findViewById(R.id.tAddress);
+        tBit = (TextView) findViewById(R.id.tBit);
 
 
         Intent intent1 = getIntent();
@@ -50,10 +50,8 @@ public class Availability extends AppCompatActivity {
 
         if (b != null) {
             j = (String) b.get("keyName");
-          //  tSetLot.setText(j);
+            //  tSetLot.setText(j);
         }
-
-
 
 
         String json_url = "http://192.168.64.2/Andriod/includes/BitCheck.php";
@@ -70,24 +68,20 @@ public class Availability extends AppCompatActivity {
                                 // new object
                                 ContactsAdapter adapter = new ContactsAdapter(jsonObject);
 
-                                // setting values
-                                adapter.setLotName(jsonObject.getString("LotName"));
-                                adapter.setAddress(jsonObject.getString("Address"));
                                 adapter.setBit(jsonObject.getString("Bit"));
-                               // adapter.setBit(jsonObject.getString("LotID"));
 
-                               tLot.setText(adapter.getLotName());
+                                tLot.setText(adapter.getLotName());
                                 tAddress.setText(adapter.getAddress());
 
-                                int bit=Integer.parseInt(adapter.getBit());
-
-
-                                if(bit==1){
-                                    count++;
-                                }
+//                                int bit = Integer.parseInt(adapter.getBit());
+//
+//
+//                                if (bit == 1) {
+//                                    count++;
+//                                }
 
                                 arrayList.add(adapter);
-                              //  Toast.makeText(context, adapter.getLotName(), Toast.LENGTH_SHORT).show();
+                                //  Toast.makeText(context, adapter.getLotName(), Toast.LENGTH_SHORT).show();
                                 System.out.println(adapter.getLotName());
                             } catch (JSONException e) {
                                 e.printStackTrace();

@@ -12,7 +12,6 @@ import android.widget.Button;
 
 public class MainActivity1stpage extends AppCompatActivity {
 
-
     Button button,button1 ;
     public class Listener  implements View.OnClickListener  {
         @Override

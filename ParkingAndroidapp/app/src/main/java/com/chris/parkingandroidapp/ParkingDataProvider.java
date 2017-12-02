@@ -4,17 +4,13 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.support.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by chrisantoinette on 11/8/17.
@@ -28,11 +24,41 @@ public class ParkingDataProvider {
     private Context mContext;
     // Lookup parking locations in this zip code.
     private HashMap<String, List<ParkingData>> mLocationLookup;
+    private ArrayList<ContactsAdapter> dataList = new ArrayList<>();
 
-    public ParkingDataProvider(Context thisContext) {
+    // TODO
+    public ParkingDataProvider(Context thisContext) { //, ArrayList<ContactsAdapter> list
         mContext = thisContext;
+
         constructMockParkingLocations();
+        //TODO
+//        constructParkingLocations();
+//        dataList = list;
     }
+
+    public List<ParkingData> getAllLocations(){
+
+        List<ParkingData> allLocations = new ArrayList<ParkingData>();
+        for(ContactsAdapter data : dataList){
+            LatLng parkingSpot2 = new LatLng(Double.parseDouble(data.getLatitude()),Double.parseDouble(data.getLongitude()) );
+            ParkingData pData = new ParkingData(data.getLotName(), data.getAddress(), parkingSpot2);
+            allLocations.add(pData);
+        }
+        return allLocations;
+
+    }
+    public void constructParkingLocations () {
+        mLocationLookup = new HashMap<String, List<ParkingData>>();
+        List<ParkingData> allLocations =  new ArrayList<>();// getAllLocations();
+
+        // College location is our current location
+        LatLng currentLocation = new LatLng(37.337011, -121.881613);
+        // Use college lat/long to get Zipcode and save that.. to store the above mentioned ParkingSpot
+        mLocationLookup.put(getZipCode(currentLocation), allLocations);
+    }
+
+
+
 
     public void constructMockParkingLocations () {
         mLocationLookup = new HashMap<String, List<ParkingData>>();

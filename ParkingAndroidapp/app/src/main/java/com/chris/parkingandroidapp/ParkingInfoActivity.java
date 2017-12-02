@@ -29,6 +29,7 @@ public class ParkingInfoActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    public String kk;
     private static final int mMap = 0;
     //private static final int mFilter = 1;
     private static final int mList = 1;
@@ -93,6 +94,7 @@ public class ParkingInfoActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             Fragment currentFragment = null;
+
             switch (position) {
                 case mMap: {
                     currentFragment = new fragmentMap();

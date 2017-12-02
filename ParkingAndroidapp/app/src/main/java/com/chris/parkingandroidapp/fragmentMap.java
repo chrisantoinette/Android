@@ -2,14 +2,16 @@ package com.chris.parkingandroidapp;
 
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,9 +21,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import android.location.LocationListener;
-import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -60,11 +61,13 @@ public class fragmentMap extends Fragment  implements LocationListener{
 
                 // For showing a move to my location button
                 googleMap.setMyLocationEnabled(true);
+
                 showMap();
 
             }
         });
-        mDataProvider = new ParkingDataProvider(getActivity());
+        //TODO
+        mDataProvider = new ParkingDataProvider(getActivity()); //,getData()
         return rootView;
     }
 
@@ -92,6 +95,21 @@ public class fragmentMap extends Fragment  implements LocationListener{
         mMapView.onLowMemory();
     }
 
+    public ArrayList<ContactsAdapter> getData(){
+        Background background = new Background(getActivity());
+        Bundle args = getArguments();
+
+        String type = null;
+        if (args != null) {
+            type = (String) args.get("type");
+        }else{
+            Log.e(TAG,"ERROR while fetching value");
+        }
+
+        ArrayList<ContactsAdapter> arrayList = background.getList(type);
+
+        return arrayList;
+    }
     public void showMap() {
         // Enable Zoom
         googleMap.getUiSettings().setZoomGesturesEnabled(true);

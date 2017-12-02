@@ -47,22 +47,8 @@ public class Background {
                                 JSONObject jsonObject = response.getJSONObject(i);
                                 // new object
                                 ContactsAdapter adapter = new ContactsAdapter(jsonObject);
-                                // setting values
-                                adapter.setLotName(jsonObject.getString("LotName"));
-                                adapter.setAddress(jsonObject.getString("Address"));
-                                //adapter.setType(jsonObject.getString("Type"));
-
                                 arrayList.add(adapter);
-                                System.out.println("heelo");
-
                                 Log.d(TAG,response.toString());
-                                // setting values
-
-
-                                // testing
-                                //  String name = jsonObject.getString("LotName");
-                                //System.out.println(i+ "\t" + name);
-                                // testing
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
