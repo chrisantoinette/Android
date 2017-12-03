@@ -111,7 +111,14 @@ public class ParkingInfoActivity extends AppCompatActivity {
             }
             return currentFragment;
         }
-
+        @Override
+        public int getItemPosition(Object object) {
+            if (object instanceof UISinkInterface) {
+                ((UISinkInterface) object).updateUI();
+            }
+            //don't return POSITION_NONE, avoid fragment recreation.
+            return super.getItemPosition(object);
+        }
         @Override
         public int getCount() {
             // Show 3 total pages.

@@ -17,7 +17,7 @@ import java.util.List;
  * Created by chrisantoinette on 10/30/17.
  */
 
-public class fragmentList extends Fragment {
+public class fragmentList extends Fragment implements UISinkInterface{
 
     ListView mListView;
     private filterOptions mOptions;
@@ -85,5 +85,10 @@ public class fragmentList extends Fragment {
         adapter.setParkingNames_(mDataProvider.getParkingLocationNames(currentLocation, mOptions));
         adapter.setParkingDistances_(mDataProvider.getParkingDistance(currentLocation, mOptions));
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateUI() {
+
     }
 }

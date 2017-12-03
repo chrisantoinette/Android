@@ -38,7 +38,7 @@ enum filterOptions {
     kBike
 };
 
-public class fragmentMap extends Fragment  implements LocationListener{
+public class fragmentMap extends Fragment  implements LocationListener, UISinkInterface{
 
     MapView mMapView;
     ParkingDataProvider mDataProvider;
@@ -216,6 +216,11 @@ public class fragmentMap extends Fragment  implements LocationListener{
 
     @Override
     public void onStatusChanged(String provider, int number, Bundle bundle) {
+
+    }
+
+    @Override
+    public void updateUI() {
 
     }
 }

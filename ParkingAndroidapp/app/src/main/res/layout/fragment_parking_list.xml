@@ -23,7 +23,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="12dp"
         android:layout_marginEnd="17dp"
-        android:src="@drawable/car_parking" />
+        android:src="@drawable/transport" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatBikeButtonList"
@@ -32,5 +32,5 @@
         android:layout_alignTop="@+id/floatCarButtonList"
         android:layout_marginEnd="18dp"
         android:layout_toStartOf="@+id/floatCarButtonList"
-        android:src="@drawable/bike_parking" />
+        android:src="@drawable/cycling_icon" />
 </RelativeLayout>
