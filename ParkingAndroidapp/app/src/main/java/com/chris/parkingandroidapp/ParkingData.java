@@ -10,11 +10,20 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class ParkingData {
     private String parkingName;
+    private filterOptions type;
     private String parkingAddress;
     private LatLng parkingSpotLocation;
 
     public void setParkingSpotLocation(LatLng parkingSpotLocation) {
         this.parkingSpotLocation = parkingSpotLocation;
+    }
+
+    public filterOptions getType() {
+        return type;
+    }
+
+    public void setType(filterOptions type) {
+        this.type = type;
     }
 
     public void setParkingAddress(String parkingAddress) {

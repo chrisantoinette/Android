@@ -2,6 +2,7 @@
 package com.chris.parkingandroidapp;
 
     import android.app.ProgressDialog;
+    import android.content.Context;
     import android.content.Intent;
     import android.os.Bundle;
     import android.support.v7.app.AppCompatActivity;
@@ -71,42 +72,48 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         progressDialog.setMessage("Registering user...");
         progressDialog.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,
-               Constant.URL_REGISTER,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressDialog.dismiss();
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-
-                            Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progressDialog.hide();
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
+        final Context thisContext = this;
+        Runnable runnable = new Runnable() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("username", username);
-                params.put("email", email);
-                params.put("password", password);
-                return params;
+            public void run() {
+                progressDialog.dismiss();
+                StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                        Constant.URL_REGISTER,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                progressDialog.dismiss();
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    Toast.makeText(thisContext, jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(thisContext, ParkingInfoActivity.class));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                progressDialog.hide();
+                                Toast.makeText(thisContext, error.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("username", username);
+                        params.put("email", email);
+                        params.put("password", password);
+                        return params;
+                    }
+                };
+                // RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+                RequestQueue requestQueue = Volley.newRequestQueue(thisContext);
+                requestQueue.add(stringRequest);
             }
         };
-        // RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+        new Thread(runnable).start();
     }
 
     @Override
@@ -115,7 +122,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             registerUser();
         }
         if (view == mButtonLogin) {
-            startActivity(new Intent(this, MainActivity1stpage.class));
+            startActivity(new Intent(this, ParkingInfoActivity.class));
         }
         //if(view == textViewLogin)
         //  startActivity(new Intent(this, LoginActivity.class));

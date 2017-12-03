@@ -20,8 +20,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.location.LocationListener;
+import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -30,14 +32,23 @@ import static android.content.Context.LOCATION_SERVICE;
 /**
  * Created on 11/6/17.
  */
+enum filterOptions {
+    kEmpty,
+    kCar,
+    kBike
+};
 
 public class fragmentMap extends Fragment  implements LocationListener{
 
     MapView mMapView;
     ParkingDataProvider mDataProvider;
+    Location mbestLocation = null;
     private Fragment mFragment;
     private GoogleMap googleMap;
+    private filterOptions mOptions;
+    private android.support.design.widget.FloatingActionButton mFloatButtonCar, mFloatButtonBike;
     private String TAG = fragmentMap.class.getName();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_fragment_parking_map, container, false);
@@ -46,6 +57,7 @@ public class fragmentMap extends Fragment  implements LocationListener{
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume(); // needed to get the map to display immediately
+        mOptions = SharedPrefManager.getInstance(getActivity()).getOptions();
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -61,10 +73,40 @@ public class fragmentMap extends Fragment  implements LocationListener{
                 // For showing a move to my location button
                 googleMap.setMyLocationEnabled(true);
                 showMap();
+            }
+        });
+
+        mDataProvider = new ParkingDataProvider(getActivity(), new ParkingDataProvider.ActivityCallBack() {
+            @Override
+            public void onSuccess() {
+                findAndPlot();
+            }
+
+            @Override
+            public void onFail(String msg) {
 
             }
         });
-        mDataProvider = new ParkingDataProvider(getActivity());
+
+        mFloatButtonCar = (android.support.design.widget.FloatingActionButton) rootView.findViewById(R.id.floatCarButton);
+        mFloatButtonCar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOptions = filterOptions.kCar;
+                SharedPrefManager.getInstance(getActivity()).setOptions(mOptions);
+                findAndPlot();
+            }
+        });
+
+        mFloatButtonBike = (android.support.design.widget.FloatingActionButton) rootView.findViewById(R.id.floatBikeButton);
+        mFloatButtonBike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOptions = filterOptions.kBike;
+                SharedPrefManager.getInstance(getActivity()).setOptions(mOptions);
+                findAndPlot();
+            }
+        });
         return rootView;
     }
 
@@ -117,16 +159,23 @@ public class fragmentMap extends Fragment  implements LocationListener{
                 bestProvider = provider;
             }
         }
+
         if (bestLocation != null) {
             onLocationChanged(bestLocation);
             // Register for location changes only if location is available.
             mLocationManager.requestLocationUpdates(bestProvider, 5000, 0,  this);
         }
-
-        // Get this location's parking spots
-
-        List<LatLng> parkingLocations = mDataProvider.getParkingLocations(bestLocation);
-        plotParkingLocations(parkingLocations);
+        mbestLocation =  bestLocation;
+        findAndPlot(); // this will plot all the spots initially !
+        // which can be later filtered.
+    }
+    private void findAndPlot() {
+        if(mbestLocation != null) {
+            googleMap.clear();
+            List<LatLng> parkingLocations = mDataProvider.getParkingLocations(mbestLocation, mOptions);
+            plotParkingLocations(parkingLocations);
+            onLocationChanged(mbestLocation);
+        }
     }
     private void plotParkingLocations(List<LatLng> parkingLocations) {
         for(int i = 0; i < parkingLocations.size(); i++) {

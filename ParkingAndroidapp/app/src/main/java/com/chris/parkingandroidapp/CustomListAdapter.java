@@ -20,16 +20,34 @@ import java.util.List;
 public class CustomListAdapter extends ArrayAdapter {
     //to reference the Activity
     private final Activity context;
-
-    //to store the animal images
-    //private final Integer[] imageIDarray;
-
-    //to store the list of countries
+    private List<String> parkingAddresses_ = new ArrayList<String>();
+    private double[] parkingDistances_;
     private List<String> parkingNames_= new ArrayList<String>();
 
-    //to store the list of countries
-    private List<String> parkingAddresses_ = new ArrayList<String>();
-    private final double[] parkingDistances_;
+    public List<String> getParkingNames_() {
+        return parkingNames_;
+    }
+
+    public void setParkingNames_(List<String> parkingNames_) {
+        this.parkingNames_ = parkingNames_;
+    }
+
+    public List<String> getParkingAddresses_() {
+        return parkingAddresses_;
+    }
+
+    public void setParkingAddresses_(List<String> parkingAddresses_) {
+        this.parkingAddresses_ = parkingAddresses_;
+    }
+
+    public double[] getParkingDistances_() {
+        return parkingDistances_;
+    }
+
+    public void setParkingDistances_(double[] parkingDistances) {
+        parkingDistances_ = parkingDistances;
+    }
+
     public CustomListAdapter(Activity context, List<String> parkingNames,
                              List<String> parkingAddresses, double[] parkingDistances)
     {
@@ -42,6 +60,15 @@ public class CustomListAdapter extends ArrayAdapter {
         this.parkingDistances_ = parkingDistances;
     }
 
+    @Override
+    public int getCount() {
+        return this.parkingNames_.isEmpty() ? 0 : this.parkingNames_.size();
+    }
+    @Override
+    public long getItemId(int position) {
+        // TODO Auto-generated method stub
+        return position;
+    }
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.listview_row, null,true);
