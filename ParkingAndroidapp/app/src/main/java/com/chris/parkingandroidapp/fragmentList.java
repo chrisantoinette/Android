@@ -47,9 +47,7 @@ public class fragmentList extends Fragment {
             Log.e(TAG,"ERROR while fetching value");
         }
 
-        arrayList = background.getList(type);
-        adapter = new RecyclerAdapter(arrayList);
-        recyclerView.setAdapter(adapter);
+        arrayList = background.getList(type, recyclerView,null);
 
         return rootView;
 

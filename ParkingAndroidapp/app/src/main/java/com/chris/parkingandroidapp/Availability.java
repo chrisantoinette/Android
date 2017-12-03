@@ -27,7 +27,7 @@ public class Availability extends AppCompatActivity {
     private TextView tLot, tAddress, tBit;
     private Context context;
     private String j = "";
-    private int count = 0;
+
     private static final String TAG = "MyActivity";
 
     static ArrayList<ContactsAdapter> arrayList = new ArrayList<>();
@@ -54,7 +54,7 @@ public class Availability extends AppCompatActivity {
         }
 
 
-        String json_url = "http://192.168.64.2/Andriod/includes/BitCheck.php";
+        String json_url = "http://18.220.178.61/Andriod/includes/BitCheck.php";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 json_url, null,
                 new Response.Listener<JSONArray>() {
@@ -62,6 +62,7 @@ public class Availability extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
 
                         System.out.println("response " + response);
+                        int count = 0;
                         for (int i = 0; i < response.length(); i++) {// Get current json object
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
@@ -73,12 +74,12 @@ public class Availability extends AppCompatActivity {
                                 tLot.setText(adapter.getLotName());
                                 tAddress.setText(adapter.getAddress());
 
-//                                int bit = Integer.parseInt(adapter.getBit());
-//
-//
-//                                if (bit == 1) {
-//                                    count++;
-//                                }
+                                int bit = Integer.parseInt(adapter.getBit());
+
+
+                                if (bit == 1) {
+                                    count++;
+                                }
 
                                 arrayList.add(adapter);
                                 //  Toast.makeText(context, adapter.getLotName(), Toast.LENGTH_SHORT).show();

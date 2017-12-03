@@ -1,6 +1,7 @@
 package com.chris.parkingandroidapp;
 
 import android.app.Activity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -9,6 +10,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +30,8 @@ import java.util.Map;
 public class Background {
     private final Activity context;
 
+    ParkingDataProvider mDataProvider;
+
     public Background(Activity context) {
         this.context = context;
 
@@ -32,9 +39,9 @@ public class Background {
     private static final String TAG = "MyActivity";
 
     ArrayList<ContactsAdapter> arrayList = new ArrayList<>();
-    String json_url = "http://192.168.64.2/Andriod/includes/ListCar.php";
+    String json_url = "http://18.220.178.61/Andriod/includes/ListCar.php";
 
-    public ArrayList<ContactsAdapter> getList(final String type) {
+    public ArrayList<ContactsAdapter> getList(final String type, final RecyclerView recyclerView, final  GoogleMap googleMap) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 json_url, null,
                 new Response.Listener<JSONArray>() {
@@ -54,6 +61,18 @@ public class Background {
                                 e.printStackTrace();
                             }
                         }
+
+                        RecyclerView.Adapter recylerAdapter = new RecyclerAdapter(arrayList);
+                        if(recyclerView!=null)
+                        recyclerView.setAdapter(recylerAdapter);
+                        if(googleMap!=null){
+                            plotParkingLocations(arrayList,googleMap);
+                        }
+
+//
+//
+//                        if(recylerAdapter !=null)
+//                        recylerAdapter.notifyDataSetChanged();
 
                     }
                 },
@@ -82,5 +101,24 @@ public class Background {
         MySingleton.getInstance(context).addToRequestQueue(jsonArrayRequest);
         return arrayList;
     }
+
+    private void plotParkingLocations(ArrayList<ContactsAdapter> contactsAdapterArrayList,GoogleMap googleMap) {
+
+        List<ParkingData> allLocations = new ArrayList<ParkingData>();
+        for(ContactsAdapter data : contactsAdapterArrayList){
+            LatLng parkingSpot2 = new LatLng(Double.parseDouble(data.getLatitude()),Double.parseDouble(data.getLongitude()) );
+            ParkingData pData = new ParkingData(data.getLotName(), data.getAddress(), parkingSpot2);
+            allLocations.add(pData);
+        }
+
+        for(int i = 0; i < allLocations.size(); i++) {
+            googleMap.addMarker(new MarkerOptions().position(allLocations.get(i).getParkingSpotLocation()).title("Parking Spot: "+ i));
+        }
+    }
+
+
+
+
+
 }
 

@@ -61,6 +61,7 @@ public class fragmentMap extends Fragment  implements LocationListener{
 
                 // For showing a move to my location button
                 googleMap.setMyLocationEnabled(true);
+                getData();
 
                 showMap();
 
@@ -68,6 +69,7 @@ public class fragmentMap extends Fragment  implements LocationListener{
         });
         //TODO
         mDataProvider = new ParkingDataProvider(getActivity()); //,getData()
+        getData();
         return rootView;
     }
 
@@ -106,7 +108,7 @@ public class fragmentMap extends Fragment  implements LocationListener{
             Log.e(TAG,"ERROR while fetching value");
         }
 
-        ArrayList<ContactsAdapter> arrayList = background.getList(type);
+        ArrayList<ContactsAdapter> arrayList = background.getList(type, null,googleMap);
 
         return arrayList;
     }
